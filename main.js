@@ -1,49 +1,58 @@
+// Add an event listener to the window object that triggers when the page is fully loaded
 window.addEventListener('load', () => {
+    // Retrieve todos from local storage or initialize an empty array if none exist
     //makes  this a global variable doesn't need let or const
 	todos = JSON.parse(localStorage.getItem('todos')) || [];
+
+    // Get references to the input fields and form in the document
 	const nameInput = document.querySelector('#name');
 	const newTodoForm = document.querySelector('#new-todo-form');
 
+     // Retrieve the stored username or set to an empty string if none is stored
 	const username = localStorage.getItem('username') || '';
-    //sets or gets username, updates when username changes
+
+    // Event listener to update the username in local storage when it changes
 	nameInput.value = username;
 
+    // Event listener to update the username in local storage when it changes
 	nameInput.addEventListener('change', (e) => {
 		localStorage.setItem('username', e.target.value);
 	})
-    //this updates are new todo list array and saves it to local storage
-    //local storage only allows you to save primative values
-    //doesn't currently check if the value is empty and throw a exception message
+    // Event listener for the new todo form submission
 	newTodoForm.addEventListener('submit', e => {
-		e.preventDefault();
+		e.preventDefault();// Prevent the default form submit action
 
+        // Create a new todo object from the form inputs
 		const todo = {
 			content: e.target.elements.content.value,
 			category: e.target.elements.category.value,
-			done: false,
-			createdAt: new Date().getTime()
+			done: false, // Newly created todos are not done
+			createdAt: new Date().getTime()// Timestamp for when the todo was created
 		}
 
+        // Add the new todo to the todos array and update local storage
 		todos.push(todo);
 
 		localStorage.setItem('todos', JSON.stringify(todos));
 
-		// Reset the form
+		// Reset the form fields and display the updated list of todos
 		e.target.reset();
 
+        // Initial display of todos when the page loads
 		DisplayTodos();
 	})
 
 	DisplayTodos();
 })
-//this display the values 
-function DisplayTodos () {
-	const todoList = document.querySelector('#todo-list');
-    //sets all elements to empty to start
-	todoList.innerHTML = "";
 
-    //loops through all todo elements 
+// Function to display the list of todos
+function DisplayTodos () {
+	const todoList = document.querySelector('#todo-list');    
+	todoList.innerHTML = "";// Clear the existing list
+
+    // Loop through each todo and create HTML elements for each
 	todos.forEach(todo => {
+        // Create elements for todo item, including label, input, and buttons
 		const todoItem = document.createElement('div');
 		todoItem.classList.add('todo-item');
 
@@ -60,14 +69,14 @@ function DisplayTodos () {
 		input.checked = todo.done;
 		span.classList.add('bubble');
 
-        //this tells what the item is personal/buisness
+        // Assign a class based on the todo's category
 		if (todo.category == 'personal') {
 			span.classList.add('personal');
 		} else {
 			span.classList.add('business');
 		}
 
-        //adds all the elements to the todo item
+        // Set the content and styles for the todo item
 		content.classList.add('todo-content');
 		actions.classList.add('actions');
 		edit.classList.add('edit');
@@ -77,7 +86,7 @@ function DisplayTodos () {
 		edit.innerHTML = 'Edit';
 		deleteButton.innerHTML = 'Delete';
 
-        //this sets the items attributes visually?
+        // Append the elements to form the todo item structure
 		label.appendChild(input);
 		label.appendChild(span);
 		actions.appendChild(edit);
@@ -86,15 +95,15 @@ function DisplayTodos () {
 		todoItem.appendChild(content);
 		todoItem.appendChild(actions);
 
-        // this sets the new item to the list
+        // Add the todo item to the todo list in the DOM
 		todoList.appendChild(todoItem);
 
-        //this checks if the item is marked done
+        // Add styling for completed todos
 		if (todo.done) {
 			todoItem.classList.add('done');
 		}
 
-		//redisplays the todos as done
+		// Event listener for marking a todo as done/not done
 		input.addEventListener('change', (e) => {
 			todo.done = e.target.checked;
 			localStorage.setItem('todos', JSON.stringify(todos));
@@ -109,7 +118,7 @@ function DisplayTodos () {
 
 		})
 
-        //this allows the item on the todo list to be edited in local storage
+        // Event listener for editing a todo
         //gives functionality to the edit button
 		edit.addEventListener('click', (e) => {
 			const input = content.querySelector('input');
@@ -123,7 +132,7 @@ function DisplayTodos () {
 
 			})
 		})
-        //this allows the todo list item to be deleted from local storage
+        // Event listener for deleting a todo
         //also adds fucntionality to the delete button
 		deleteButton.addEventListener('click', (e) => {
 			todos = todos.filter(t => t != todo);
