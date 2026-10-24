@@ -41,7 +41,8 @@ nav button.list-link.sidebar-overdue { background-color: var(--red-bg); border-c
 .backup-tools p:last-child { color: #B5D1DD; font-size: 12px; }
 .backup-tools button { font-size: 12px; }
 main { width: 100%; max-width: 1120px; margin: 0 auto; padding: 38px; align-self: start; }
-header { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+header { display: grid; gap: 16px; }
+.header-title { min-width: 0; text-align: center; }
 .header-actions { display: flex; align-items: center; justify-content: flex-end; gap: 12px; min-width: 0; }
 .header-actions #theme { flex-shrink: 0; }
 .header-actions .date { text-align: right; }
@@ -172,7 +173,6 @@ label input { font-size: 14px; color: var(--text); }
   .new-list { width: auto; }
   .backup-tools { margin-top: 16px; }
   main { padding: 24px 15px; }
-  header { flex-wrap: wrap; }
   .header-actions { width: 100%; }
   h1 { font-size: 27px; }
   .search-group { max-width: none; flex-basis: 100%; }
