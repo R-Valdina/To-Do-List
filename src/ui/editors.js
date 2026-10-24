@@ -1,4 +1,4 @@
-import { COLORS, TEXTURES, normalizeAppearance, applyAppearance, textureImage } from '../themes.js';
+import { COLORS, TEXTURES, normalizeAppearance, applyAppearance } from '../themes.js';
 import { PRIORITIES } from '../model.js';
 import { formatDate } from '../dates.js';
 import { $, element, button, showError } from './dom.js';
@@ -33,13 +33,25 @@ export function createEditors({ getState, onSaveList, onSaveTask }) {
     control.addEventListener('click', () => document.getElementById(control.dataset.close).close());
   });
 
+  const colorGroups = new Map();
   Object.entries(COLORS).forEach(([key, color]) => {
+    const family = color.family ?? 'Coastal & classics';
+    if (!colorGroups.has(family)) {
+      const group = element('div', 'color-family');
+      const heading = element('h3', '', family);
+      const swatches = element('div', 'color-swatches');
+      swatches.setAttribute('role', 'group');
+      swatches.setAttribute('aria-label', family);
+      group.append(heading, swatches);
+      $('#colors').append(group);
+      colorGroups.set(family, swatches);
+    }
     const control = button('', 'color-button', () => { appearance.color = key; updatePreview(); });
     control.dataset.color = key;
     control.title = color.name;
     control.setAttribute('aria-label', color.name);
     control.style.setProperty('--swatch', color.base);
-    $('#colors').append(control);
+    colorGroups.get(family).append(control);
   });
   Object.entries(TEXTURES).forEach(([key, name]) => {
     const control = button('', 'texture-button', () => { appearance.texture = key; updatePreview(); });
@@ -73,8 +85,9 @@ export function createEditors({ getState, onSaveList, onSaveTask }) {
       const key = control.dataset.texture;
       control.setAttribute('aria-pressed', key === appearance.texture);
       const sample = control.querySelector('.texture-sample');
-      sample.style.backgroundImage = textureImage(key, dark);
-      sample.style.backgroundSize = key === 'dots' ? '12px 12px' : key === 'grid' ? '16px 16px' : 'auto';
+      applyAppearance(sample, { ...appearance, texture: key }, dark);
+      sample.style.backgroundImage = 'var(--list-texture)';
+      sample.style.backgroundColor = 'var(--list-tint)';
     });
   }
   $('#list-name').addEventListener('input', () => { showError($('#list-form-error')); updatePreview(); });

@@ -29,6 +29,8 @@ Open the app on port 8000 in your browser. Serve the repository root over HTTP: 
 - Custom themed calendars with arrow-key navigation and responsive scrollable dialogs.
 - Deadline warnings use shapes and text as well as color: yellow triangle within 3 days, red octagon today/tomorrow, and red clock with a soft red background after the due date. Completed tasks/lists suppress warnings. Empty lists remain incomplete.
 - Individual list appearance is repeated in the sidebar. White lists keep white borders, neutral gray text/progress, and white backgrounds in either app theme. Explicit overdue warnings take precedence over a list's background color.
+- 24 list colors, grouped into Coastal & classics and Earth & autumn. The autumn palette adds Sandstone, Clay, Terracotta, Rust, Pumpkin, Golden Ochre, Olive, Moss, Evergreen, Cocoa, Burgundy, and Autumn Plum.
+- 10 local background styles: Plain, Dots, Grid, Stripes, Cross dots, Gingham, Chevron, Triangles, Notebook, and Linen. Pattern previews use the selected color and the same repeat size/offsets as sidebar tiles and list cards. Task rows remain on solid surfaces for readability.
 - JSON export/import, automatic legacy migration, and browser-storage error recovery.
 - Sidebar Help dialog with reordering, storage, backup, editing, and deadline guidance.
 - Sidebar motivational/humorous quotes, rotating every five minutes with Next and Pause/Resume controls. Hidden tabs stop automatic rotation.
@@ -102,6 +104,7 @@ src/
   quotes.js                Quote API client, validation, cache, offline copy
   dates.js                 Local date validation and deadline calculations
   themes.js                List colors, textures, and appearance application
+  patterns.js              Local gradient patterns adapted from pattern.css
   ui/
     dom.js                 Safe DOM helpers and warning icons
     render.js              Navigation, list, and task rendering
@@ -113,6 +116,7 @@ tests/
   *.test.js                Unit tests using Node's built-in runner
   test_app_browser.py      Playwright end-to-end browser automation
 .github/workflows/test.yml Unit and browser test CI
+THIRD_PARTY_NOTICES.md     Attribution and MIT license for adapted patterns
 ```
 
 The app intentionally has no framework or bundler. Modules isolate responsibilities without adding a build pipeline. User-entered text uses DOM text/value properties, never HTML interpolation. Static SVG icon markup is application-owned. The model and storage modules can be tested independently of the DOM, and persistence can be replaced later if a backend or desktop app is introduced.
@@ -140,10 +144,10 @@ On Linux, Playwright may require system browser dependencies (`python -m playwri
 
 The browser suite starts its own server on an available loopback port and creates a fresh browser context for each test. It does not touch your normal browser data. It uses a system `chromium` executable when available, or Playwright's installed Chromium. Set `CHROMIUM_PATH` to select another Chromium executable.
 
-Tests cover validation, schema errors, migrations, storage failures, calendar-day/DST boundaries, per-list progress, task order integrity, list/task CRUD, scoped search, sorting, custom calendars, mobile dialogs, literal task text, white-list styling, warnings, mouse/touch/keyboard reordering, reload persistence, actual JSON downloads, import cancellation, and recovery from corrupt storage. Quote tests cover response validation, caching, timeouts, five-minute rotation, pause/resume, offline fallback, attribution, and safe rendering. Browser tests stub the quote service and fail on uncaught JavaScript errors or unexpected external requests; CI does not depend on a live public API.
+Tests cover validation, schema errors, migrations, storage failures, calendar-day/DST boundaries, per-list progress, task order integrity, list/task CRUD, scoped search, sorting, custom calendars, mobile dialogs, literal task text, white-list styling, warnings, mouse/touch/keyboard reordering, reload persistence, actual JSON downloads, import cancellation, and recovery from corrupt storage. Theme tests check heading contrast against base tints, all autumn color/pattern backup combinations, and matching pattern previews/sidebar cards in both app themes. Quote tests cover response validation, caching, timeouts, five-minute rotation, pause/resume, offline fallback, attribution, and safe rendering. Browser tests stub the quote service and fail on uncaught JavaScript errors or unexpected external requests; CI does not depend on a live public API.
 
 GitHub Actions runs the unit suite and Chromium automation on pushes and pull requests. CI dependencies are test-only; deploying the application requires only serving the repository's static application files.
 
 ## Credits and license
 
-The original app was inspired by [Learn to Build a Todo List App in 2022](https://www.youtube.com/watch?v=6eFwtaZf6zc). This revision retains the repository's [MIT license](LICENSE).
+The original app was inspired by [Learn to Build a Todo List App in 2022](https://www.youtube.com/watch?v=6eFwtaZf6zc). Background formulas are adapted from [pattern.css 1.0.0](https://github.com/bansal-io/pattern.css) by bansal-io (MIT); see [third-party notices](THIRD_PARTY_NOTICES.md) for source and license details. No CDN or installed pattern library is needed. This revision retains the repository's [MIT license](LICENSE).

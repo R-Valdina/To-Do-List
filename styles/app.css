@@ -137,11 +137,15 @@ label, .field { display: grid; gap: 8px; min-width: 0; }
 .field-label, label { color: var(--muted); font-size: 12px; }
 label input { font-size: 14px; color: var(--text); }
 .help { color: var(--muted); font-size: 12px; }
+.help a { color: var(--accent); }
 .priority-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .priority-option { display: flex; align-items: center; justify-content: center; gap: 6px; }
 .priority-option::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
 .priority-option[aria-pressed='true'] { outline: 2px solid currentColor; outline-offset: 1px; }
-.colors { display: flex; flex-wrap: wrap; gap: 10px; padding: 3px; }
+.colors { display: grid; gap: 16px; padding: 3px; }
+.color-family { display: grid; gap: 9px; }
+.color-family h3 { margin: 0; color: var(--muted); font-size: 11px; font-weight: 600; }
+.color-swatches { display: flex; flex-wrap: wrap; gap: 10px; }
 .color-button { width: 37px; height: 37px; padding: 0; background: var(--swatch); border: 3px solid var(--panel); box-shadow: 0 0 0 1px var(--line); }
 .color-button:hover { background: var(--swatch); }
 .color-button[aria-pressed='true'] { outline: 2px solid var(--text); outline-offset: 2px; }
@@ -149,7 +153,7 @@ label input { font-size: 14px; color: var(--text); }
 .textures { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
 .texture-button { padding: 8px; font-size: 12px; }
 .texture-button[aria-pressed='true'] { border-color: var(--accent); background: var(--soft); color: var(--accent); }
-.texture-sample { display: block; height: 38px; margin-bottom: 6px; border: 1px solid var(--line); border-radius: var(--radius); background-color: var(--field); }
+.texture-sample { display: block; height: 48px; margin-bottom: 6px; border: 1px solid var(--line); border-radius: var(--radius); background-color: var(--field); }
 .preview { padding: 15px; border: 1px solid var(--list-border); border-top: 5px solid var(--list-accent); border-radius: var(--radius); background-color: var(--list-tint); background-image: var(--list-texture); color: var(--text); }
 .preview strong { color: var(--list-ink); overflow-wrap: anywhere; }
 .preview p { color: var(--muted); font-size: 12px; margin-top: 4px; }

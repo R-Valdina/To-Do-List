@@ -369,6 +369,37 @@ class AppBrowserTests(unittest.TestCase):
         expect(card.locator("[data-quote-credit]")).to_be_visible()
         self.assertEqual(len([url for url in self.requests if url.startswith(QUOTE_API_PREFIX)]), calls)
 
+    def test_autumn_colors_and_patterns_match_preview_sidebar_and_saved_list(self):
+        self.seed([list_data("autumn", "Autumn", [task("at", "Seasonal task")])])
+        for texture in ["crossDots", "gingham", "chevron", "triangles", "notebook", "linen"]:
+            self.page.locator(".list-card summary").click()
+            self.page.get_by_role("button", name="Edit list", exact=True).click()
+            self.assertEqual(self.page.locator("#colors [data-color]").count(), 24)
+            expect(self.page.get_by_role("group", name="Earth & autumn", exact=True)).to_be_visible()
+            self.page.locator('[data-color="terracotta"]').click()
+            control = self.page.locator(f'[data-texture="{texture}"]')
+            control.click()
+            preview = self.page.locator("#list-preview").evaluate("el=>{const s=getComputedStyle(el);return [s.backgroundImage,s.backgroundSize,s.backgroundPosition]}")
+            self.assertNotEqual(preview[0], "none")
+            sample = control.locator(".texture-sample").evaluate("el=>{const s=getComputedStyle(el);return [s.backgroundImage,s.backgroundSize,s.backgroundPosition]}")
+            self.assertEqual(preview, sample)
+            self.page.locator("#list-form button[type=submit]").click()
+            for selector in ['.list-card[data-list-id="autumn"]', '#navigation [data-list-id="autumn"]']:
+                actual = self.page.locator(selector).evaluate("el=>{const s=getComputedStyle(el);return [s.backgroundImage,s.backgroundSize,s.backgroundPosition]}")
+                self.assertEqual(preview, actual)
+            self.assertEqual(self.saved()["lists"][0]["appearance"], {"color": "terracotta", "texture": texture})
+        self.page.reload()
+        self.assertEqual(self.saved()["lists"][0]["appearance"]["texture"], "linen")
+        self.page.locator("#theme").click()
+        self.page.set_viewport_size({"width": 375, "height": 667})
+        self.page.locator(".list-card summary").click()
+        self.page.get_by_role("button", name="Edit list", exact=True).click()
+        self.page.locator('[data-color="plum"]').click()
+        self.page.locator('[data-texture="chevron"]').click()
+        self.page.locator("#list-form button[type=submit]").click()
+        self.assertEqual(self.saved()["lists"][0]["appearance"], {"color": "plum", "texture": "chevron"})
+        self.assertLessEqual(self.page.evaluate("document.documentElement.scrollWidth"), 375)
+
     def test_quote_api_failure_keeps_sidebar_functional_and_quote_text_is_safe(self):
         self.page.evaluate("localStorage.removeItem('todo-list:quotes:v1')")
         self.page.unroute("https://api.quotable.io/**")
