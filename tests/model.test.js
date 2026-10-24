@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { emptyState, validateState, listValues, taskValues, reorderTasks, isComplete, progressText } from '../src/model.js';
+import { emptyState, validateState, listValues, taskValues, reorderTasks, isComplete, progressText, listProgress, completionText } from '../src/model.js';
 import { normalizeAppearance } from '../src/themes.js';
 
 const task = (id = 'task-1') => ({ id, text: 'Buy milk', due: '', priority: 'Medium', done: false });
@@ -73,6 +73,15 @@ test('empty lists are not complete, progress is scoped to a list', () => {
   value.tasks.forEach(task => { task.done = true; });
   assert.equal(isComplete(value), true);
   assert.equal(progressText(value), '2 of 2 done');
+});
+
+test('completion percentages handle empty, partial and finished lists accurately', () => {
+  assert.deepEqual(listProgress({ tasks: [] }), { done: 0, total: 0, percent: 0 });
+  for (const [done, total, percent] of [[0, 3, 0], [1, 3, 33], [1, 4, 25], [2, 3, 67], [3, 3, 100]]) {
+    const value = { tasks: Array.from({ length: total }, (_, index) => ({ done: index < done })) };
+    assert.deepEqual(listProgress(value), { done, total, percent });
+    assert.equal(completionText(value), `${done} of ${total} · ${percent}% complete`);
+  }
 });
 
 test('legacy themes migrate and unknown appearance cannot inject CSS', () => {

@@ -21,7 +21,7 @@ Open the app on port 8000 in your browser. Serve the repository root over HTTP: 
 ## Features
 
 - Create and edit lists with a name, optional deadline, color, and texture.
-- Per-list progress; All lists view; scoped search; A–Z/Z–A list sorting.
+- Per-list progress with a visible bar and a count/percentage beneath it (for example, `1 of 4 · 25% complete`); All lists view; scoped search; A–Z/Z–A list sorting. Percentages round to the nearest whole number and always reflect the full list, even during search.
 - Add and edit tasks with priorities and optional task deadlines.
 - Red High, yellow Medium, and green Low priorities.
 - Mouse/touch drag grips and keyboard reordering. Focus a grip and press Up/Down; Escape cancels dragging. Clear search to reorder the complete list.

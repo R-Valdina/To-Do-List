@@ -1,5 +1,5 @@
 import { deadline } from '../dates.js';
-import { isComplete, progressText } from '../model.js';
+import { isComplete, progressText, listProgress, completionText } from '../model.js';
 import { applyAppearance } from '../themes.js';
 import { $, element, button, deadlineBadge } from './dom.js';
 
@@ -63,7 +63,7 @@ export function renderApp(state, view, actions, drag) {
     const title = element('h2', '', list.name);
     title.id = `list-heading-${++sequence}`;
     card.setAttribute('aria-labelledby', title.id);
-    info.append(title, element('p', 'list-count', progressText(list)));
+    info.append(title);
     if (status) {
       const due = element('div', 'list-deadline');
       due.append(deadlineBadge(status));
@@ -77,12 +77,18 @@ export function renderApp(state, view, actions, drag) {
     details.append(summary, menu);
     heading.append(info, details);
     const progress = document.createElement('progress');
-    progress.max = list.tasks.length || 1;
-    progress.value = list.tasks.filter(task => task.done).length;
-    progress.setAttribute('aria-label', `${list.name}: ${progressText(list)}`);
+    const { done, total } = listProgress(list);
+    progress.max = total || 1;
+    progress.value = done;
+    progress.setAttribute('aria-label', `${list.name} progress`);
+    const progressSummary = element('div', 'progress-summary');
+    const caption = element('p', 'list-count', completionText(list));
+    caption.id = `list-progress-${sequence}`;
+    progress.setAttribute('aria-describedby', caption.id);
+    progressSummary.append(progress, caption);
     const tasks = element('ol', 'tasks');
     visible.forEach(task => tasks.append(renderTask(list, task, query, actions, drag)));
-    card.append(heading, progress, tasks);
+    card.append(heading, progressSummary, tasks);
     if (!visible.length) card.append(element('p', 'empty', query ? 'No matching tasks in this list.' : 'No tasks yet. Add your first step.'));
     const add = button('＋ Add task', 'add-task', () => actions.editTask(list, null, add));
     card.append(add);

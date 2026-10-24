@@ -125,7 +125,7 @@ class AppBrowserTests(unittest.TestCase):
         self.page.locator('[data-priority="Low"]').click()
         self.page.locator("#task-text").press("Enter")
         self.page.locator(".check").check()
-        expect(self.page.locator(".list-count")).to_have_text("1 of 1 done")
+        expect(self.page.locator(".list-count")).to_have_text("1 of 1 · 100% complete")
         expect(self.page.locator(".task .badge.complete")).to_be_visible()
         self.page.reload()
         expect(self.page.locator(".task-title")).to_have_text("Edited task")
@@ -168,7 +168,7 @@ class AppBrowserTests(unittest.TestCase):
         expect(self.page.locator("#search")).to_have_attribute("placeholder", "Search tasks in Alpha…")
         self.page.locator("#search").fill("Common")
         self.assertEqual(self.titles(), ["Common"])
-        expect(self.page.locator(".list-count")).to_have_text("0 of 2 done")
+        expect(self.page.locator(".list-count")).to_have_text("0 of 2 · 0% complete")
         expect(self.page.locator(".drag-handle")).to_be_disabled()
         self.page.get_by_role("button", name="All lists 2", exact=True).click()
         self.page.locator("#search").fill("Common")
@@ -195,6 +195,25 @@ class AppBrowserTests(unittest.TestCase):
         self.page.locator("#list-form button[type=submit]").click()
         self.page.reload()
         expect(self.page.locator("body")).to_have_class("dark")
+
+    def test_progress_count_and_percentage_are_below_visible_bar_and_update_per_list(self):
+        self.seed([list_data("partial", "Partial", [task("p1", "One", True), task("p2", "Two"),
+                   task("p3", "Three"), task("p4", "Four")]), list_data("empty", "Empty")])
+        card = self.page.locator('.list-card[data-list-id="partial"]')
+        expect(card.locator(".list-count")).to_have_text("1 of 4 · 25% complete")
+        progress = card.locator("progress")
+        self.assertEqual(progress.evaluate("el=>el.position"), 0.25)
+        bar = progress.bounding_box()
+        caption = card.locator(".list-count").bounding_box()
+        self.assertGreaterEqual(bar["height"], 12)
+        self.assertGreaterEqual(caption["y"], bar["y"] + bar["height"])
+        card.locator('.task[data-task-id="p2"] .check').check()
+        expect(card.locator(".list-count")).to_have_text("2 of 4 · 50% complete")
+        expect(self.page.locator('.list-card[data-list-id="empty"] .list-count')).to_have_text("0 of 0 · 0% complete")
+        self.page.locator("#search").fill("Three")
+        expect(card.locator(".list-count")).to_have_text("2 of 4 · 50% complete")
+        self.page.reload()
+        expect(card.locator(".list-count")).to_have_text("2 of 4 · 50% complete")
 
     def test_mouse_drag_keyboard_reordering_and_escape_cancel(self):
         self.seed([list_data("a", "Personal", [task("a1", "First"), task("a2", "Second"), task("a3", "Third")])])

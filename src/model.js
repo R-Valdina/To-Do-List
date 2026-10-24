@@ -84,6 +84,17 @@ export function taskValues(values) {
 export const isComplete = list => list.tasks.length > 0 && list.tasks.every(task => task.done);
 export const progressText = list => `${list.tasks.filter(task => task.done).length} of ${list.tasks.length} done`;
 
+export function listProgress(list) {
+  const total = list.tasks.length;
+  const done = list.tasks.filter(task => task.done).length;
+  return { done, total, percent: total ? Math.round(done / total * 100) : 0 };
+}
+
+export function completionText(list) {
+  const { done, total, percent } = listProgress(list);
+  return `${done} of ${total} · ${percent}% complete`;
+}
+
 export function reorderTasks(list, ids) {
   const byId = new Map(list.tasks.map(task => [task.id, task]));
   if (ids.length !== list.tasks.length || new Set(ids).size !== ids.length ||
