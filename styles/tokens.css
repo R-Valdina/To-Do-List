@@ -1,0 +1,57 @@
+:root {
+  color-scheme: light;
+  --bg: #F4F9FF;
+  --panel: #FFFFFF;
+  --field: #EDF6FA;
+  --text: #0B3954;
+  --muted: #486775;
+  --line: #C9DFE7;
+  --accent: #087E8B;
+  --on-accent: #FFFFFF;
+  --soft: #E0F3F1;
+  --red: #A51E32;
+  --red-bg: #FCE7E9;
+  --yellow: #795000;
+  --yellow-bg: #FFF0B3;
+  --green: #265C38;
+  --green-bg: #E0EFDF;
+  --radius: 10px;
+  --shadow: 0 15px 45px #0B395418;
+}
+body.dark {
+  color-scheme: dark;
+  --bg: #082A3D;
+  --panel: #0B3954;
+  --field: #12465D;
+  --text: #F4F9FF;
+  --muted: #B5D1DD;
+  --line: #326078;
+  --accent: #00B2CA;
+  --on-accent: #062A3C;
+  --soft: #155260;
+  --red: #FFBAC3;
+  --red-bg: #4D2731;
+  --yellow: #FFE392;
+  --yellow-bg: #4C4020;
+  --green: #B7E4C7;
+  --green-bg: #214B3D;
+  --shadow: 0 15px 45px #00000035;
+}
+/* White is neutral in both themes. Border, content, and progress are separate. */
+.white-list {
+  color-scheme: light;
+  --panel: #FFFFFF;
+  --field: #F3F3F3;
+  --text: #343434;
+  --muted: #6B6B6B;
+  --line: #E4E4E4;
+  --soft: #F1F1F1;
+  --accent: #737373;
+  --on-accent: #FFFFFF;
+  --red: #A51E32;
+  --red-bg: #FCE7E9;
+  --yellow: #795000;
+  --yellow-bg: #FFF0B3;
+  --green: #265C38;
+  --green-bg: #E0EFDF;
+}

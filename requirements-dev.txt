@@ -1,0 +1,2 @@
+# Optional browser-test tooling; not needed to run the application.
+playwright==1.62.0

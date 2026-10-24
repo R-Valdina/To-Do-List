@@ -1,0 +1,14 @@
+{
+  "name": "to-do-list",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A local-first, accessible list and task manager built with native web modules.",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "dev": "python3 -m http.server 8000 --bind 127.0.0.1",
+    "start": "npm run dev",
+    "test": "node --test tests/*.test.js",
+    "test:browser": "python3 -m unittest discover -s tests -p '*_browser.py' -v"
+  }
+}

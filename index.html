@@ -1,72 +1,150 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo List 2023 With  LocalStroage</title>
-    <!--links the css-->
-    <link rel="stylesheet" href="main.css">   
-    <!--links fonts beins-->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,700;0,900;1,400&family=Montserrat:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
-    <!--links fonts ends-->
-
-      
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0B3954">
+  <meta name="description" content="Organize your lists, tasks, and deadlines. Your data stays in your browser, with JSON backup and restore.">
+  <title>To-Do List</title>
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/app.css">
+  <script type="module" src="src/app.js"></script>
 </head>
 <body>
-    <!-- App Wrapper-->
-    <main class="app">        
-        <!-- Greeting-->
-        <section class="greetng">
-            <h2 class="title">
-                Welcome to Your Todo List,  <input type="text" id="name" placeholder="Name here" />
-            </h2>
-        </section>
-        <!-- End of Greeting-->
-
-        <!-- New Todo-->
-        <section class="create-todo">
-			<h3>CREATE A TODO</h3>
-			<form id="new-todo-form">
-				<h4>What's on your todo?</h4>
-				<input 
-					type="text" 
-					placeholder="e.g. Get some milk"
-					name="content"
-					id="content" />
-				
-				<h4>Pick a category</h4>
-				<div class="options">
-					<label>
-						<input type="radio" name="category" id="category1" value="business" /> 
-						<span class="bubble business"></span>
-						<div>Business</div>
-					</label>
-					<label>
-						<input type="radio" name="category" id="category2" value="personal" />
-						<span class="bubble personal"></span>
-						<div>Personal</div>
-					</label>
-				</div>
-
-				<input type="submit" value="Add todo" />
-			</form>
-		</section>
-        <!--End of New Todo-->  
-
-        <!-- Todo List -->
-        <section class="todo-list">
-			<h3>TODO LIST</h3>
-			<div class="list" id="todo-list"></div>
-		</section>
-		<!-- End of Todo List -->
-
+  <a class="skip-link" href="#main">Skip to lists</a>
+  <div class="shell">
+    <aside>
+      <div class="brand"><span aria-hidden="true">✓</span> To-Do List</div>
+      <div class="navigation-heading">
+        <span class="caption">Your lists</span>
+        <button id="sort-lists" class="sort-button" type="button">A–Z ↓</button>
+      </div>
+      <nav id="navigation" aria-label="Lists"></nav>
+      <button id="new-list" class="new-list" type="button">＋ Create list</button>
+      <section class="backup-tools" aria-label="Data backups">
+        <p class="caption">Your data</p>
+        <button id="export" type="button">Export JSON</button>
+        <button id="import" type="button">Import JSON</button>
+        <input id="import-file" type="file" accept=".json,application/json" hidden>
+        <p>Stored in this browser.<br>Export a backup to keep a separate copy.</p>
+      </section>
+    </aside>
+    <main id="main" tabindex="-1">
+      <header>
+        <div>
+          <p id="date" class="date"></p>
+          <h1 id="heading">All lists</h1>
+          <p class="muted">A clear place for every part of your day.</p>
+        </div>
+        <button id="theme" type="button" aria-label="Toggle dark theme" aria-pressed="false">◐ Theme</button>
+      </header>
+      <div id="storage-error" class="error-banner" role="alert" hidden></div>
+      <div class="toolbar">
+        <div class="search-group">
+          <label class="sr-only" for="search">Search lists and tasks</label>
+          <input id="search" class="search" type="search" placeholder="Search all lists and tasks…" aria-describedby="search-scope">
+          <span id="search-scope" class="search-scope"></span>
+        </div>
+        <button id="top-add-task" class="primary" type="button" hidden>＋ Add task</button>
+      </div>
+      <div id="lists" class="stack"></div>
+      <p id="status" role="status" aria-live="polite"></p>
+      <footer>Saved in this browser · Drag the grips to reorder tasks<br>Keyboard: focus a grip and use ↑ / ↓ · Export JSON for a backup</footer>
     </main>
-    <!-- End of App Wrapper-->
+  </div>
 
-    <!-- JS Import-->
-    <script src="main.js"></script>
-    <!-- End of JS Import-->
+  <dialog id="list-dialog" aria-labelledby="list-dialog-title">
+    <form id="list-form" class="modal-form">
+      <div class="modal-header">
+        <h2 id="list-dialog-title">Create list</h2>
+        <p>Set the name, appearance, and deadline for the whole list.</p>
+      </div>
+      <div class="modal-body">
+        <div class="form-fields">
+          <label for="list-name">List name
+            <input id="list-name" maxlength="70" placeholder="e.g. Meal prepping" required>
+          </label>
+          <div class="field">
+            <span class="field-label" id="list-due-label">List due date</span>
+            <div id="list-date-picker"></div>
+            <p class="help">Optional. Yellow within 3 days; red today or tomorrow; soft red when overdue. Completed lists have no warnings.</p>
+          </div>
+          <div class="field">
+            <span class="field-label" id="colors-label">List color</span>
+            <div id="colors" class="colors" role="group" aria-labelledby="colors-label"></div>
+            <p id="selected-color-name" class="help"></p>
+          </div>
+          <div class="field">
+            <span class="field-label" id="textures-label">Background texture</span>
+            <div id="textures" class="textures" role="group" aria-labelledby="textures-label"></div>
+          </div>
+          <div id="list-preview" class="preview">
+            <strong id="preview-name">Your list</strong>
+            <p id="preview-due">No list deadline</p>
+            <progress max="7" value="4" aria-label="Example progress: 4 of 7 complete"></progress>
+          </div>
+          <p id="list-form-error" class="form-error" role="alert" hidden></p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="reset-appearance" type="button">Reset style</button>
+        <button type="button" data-close="list-dialog">Cancel</button>
+        <button class="primary" type="submit">Save list</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="task-dialog" aria-labelledby="task-dialog-title">
+    <form id="task-form" class="modal-form">
+      <div class="modal-header">
+        <h2 id="task-dialog-title">Add task</h2>
+        <p id="task-list-deadline"></p>
+      </div>
+      <div class="modal-body">
+        <div class="form-fields">
+          <label for="task-text">Task
+            <input id="task-text" maxlength="250" placeholder="What needs to get done?" required>
+          </label>
+          <div class="field">
+            <span class="field-label" id="priority-label">Priority</span>
+            <div id="priority-options" class="priority-options" role="group" aria-labelledby="priority-label"></div>
+          </div>
+          <div class="field">
+            <span class="field-label" id="task-due-label">Task due date</span>
+            <div id="task-date-picker"></div>
+            <p class="help">Task deadlines are separate from the list deadline.</p>
+          </div>
+          <p class="help">Enter in the task field saves · Escape cancels</p>
+          <p id="task-form-error" class="form-error" role="alert" hidden></p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" data-close="task-dialog">Cancel</button>
+        <button class="primary" type="submit">Save task</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="import-dialog" aria-labelledby="import-title">
+    <form id="import-form" class="modal-form">
+      <div class="modal-header"><h2 id="import-title">Replace lists from backup?</h2></div>
+      <div class="modal-body">
+        <p id="import-summary"></p>
+        <p class="help">Import replaces the current lists. Export your current data first if you want to keep a copy.</p>
+        <p id="import-error" class="form-error" role="alert" hidden></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" data-close="import-dialog">Cancel</button>
+        <button class="primary" type="submit">Replace lists</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" hidden>
+    <span>Task deleted</span>
+    <button id="undo" type="button">Undo</button>
+    <button id="dismiss-undo" type="button" aria-label="Dismiss undo">×</button>
+  </div>
+  <noscript><p class="error-banner">Enable JavaScript to use your lists. This application does not send your tasks to a server.</p></noscript>
 </body>
 </html>
