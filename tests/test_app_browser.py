@@ -306,6 +306,27 @@ class AppBrowserTests(unittest.TestCase):
         self.assertEqual(self.saved()["lists"][0]["name"], "Personal")
         self.assertEqual(self.page.evaluate("JSON.parse(localStorage.getItem('todos'))"), original)
 
+    def test_help_replaces_footer_and_restores_focus_on_close(self):
+        self.assertEqual(self.page.locator("main footer").count(), 0)
+        self.assertEqual(self.page.locator("#search-scope").count(), 0)
+        expect(self.page.locator("#lists .empty")).to_have_text("Create your first list to get started.")
+        self.page.locator("#help").click()
+        dialog = self.page.get_by_role("dialog", name="Help", exact=True)
+        expect(dialog).to_be_visible()
+        expect(dialog.get_by_role("heading", name="Reorder tasks")).to_be_visible()
+        expect(dialog.get_by_role("heading", name="Keep a backup")).to_be_visible()
+        dialog.get_by_role("button", name="Close", exact=True).click()
+        expect(dialog).not_to_be_visible()
+        expect(self.page.locator("#help")).to_be_focused()
+        self.page.set_viewport_size({"width": 375, "height": 667})
+        self.page.locator("#help").click()
+        dialog.get_by_role("button", name="Close", exact=True).click()
+        expect(self.page.locator("#help")).to_be_focused()
+        self.page.locator("#help").click()
+        self.page.keyboard.press("Escape")
+        expect(dialog).not_to_be_visible()
+        expect(self.page.locator("#help")).to_be_focused()
+
     def test_mockup_data_migrates_with_white_theme_and_settings(self):
         mockup = [list_data("mock", "Mockup", [task("m", "Preserved")], color="creamy")]
         self.page.evaluate("value=>{localStorage.setItem('todo-lists-mockup-v3',JSON.stringify(value));localStorage.setItem('todo-lists-theme','dark')}", mockup)

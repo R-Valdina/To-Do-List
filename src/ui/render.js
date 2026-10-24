@@ -46,8 +46,6 @@ export function renderApp(state, view, actions, drag) {
   $('#top-add-task').setAttribute('aria-label', all ? 'Add task' : `Add task to ${current.name}`);
   $('#search').placeholder = all ? 'Search all lists and tasks…' : `Search tasks in ${current.name}…`;
   $('#search').setAttribute('aria-label', $('#search').placeholder);
-  $('#search-scope').textContent = all ? 'Searching every list and its tasks.' :
-    'Searching only this list. Choose All lists to search everywhere.';
 
   const query = $('#search').value.trim().toLowerCase();
   const container = $('#lists');
@@ -91,7 +89,7 @@ export function renderApp(state, view, actions, drag) {
     container.append(card);
   });
   if (!container.children.length) container.append(element('p', 'empty', query ?
-    'No matching lists or tasks.' : 'Create your first list to get started. Your lists will be saved in this browser.'));
+    'No matching lists or tasks.' : 'Create your first list to get started.'));
 }
 
 function renderTask(list, task, query, actions, drag) {

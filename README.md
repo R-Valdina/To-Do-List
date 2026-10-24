@@ -30,6 +30,7 @@ Open the app on port 8000 in your browser. Serve the repository root over HTTP: 
 - Deadline warnings use shapes and text as well as color: yellow triangle within 3 days, red octagon today/tomorrow, and red clock with a soft red background after the due date. Completed tasks/lists suppress warnings. Empty lists remain incomplete.
 - Individual list appearance is repeated in the sidebar. White lists keep white borders, neutral gray text/progress, and white backgrounds in either app theme. Explicit overdue warnings take precedence over a list's background color.
 - JSON export/import, automatic legacy migration, and browser-storage error recovery.
+- Sidebar Help dialog with reordering, storage, backup, editing, and deadline guidance.
 - No external fonts, images, trackers, or network services are needed by the app. Palette colors inspired by the supplied images are approximations rather than official paint values.
 
 ## Where your data lives

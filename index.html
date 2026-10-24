@@ -25,6 +25,7 @@
         <p class="caption">Your data</p>
         <button id="export" type="button">Export JSON</button>
         <button id="import" type="button">Import JSON</button>
+        <button id="help" type="button" aria-haspopup="dialog" aria-controls="help-dialog">Help</button>
         <input id="import-file" type="file" accept=".json,application/json" hidden>
         <p>Stored in this browser.<br>Export a backup to keep a separate copy.</p>
       </section>
@@ -42,16 +43,48 @@
       <div class="toolbar">
         <div class="search-group">
           <label class="sr-only" for="search">Search lists and tasks</label>
-          <input id="search" class="search" type="search" placeholder="Search all lists and tasks…" aria-describedby="search-scope">
-          <span id="search-scope" class="search-scope"></span>
+          <input id="search" class="search" type="search" placeholder="Search all lists and tasks…">
         </div>
         <button id="top-add-task" class="primary" type="button" hidden>＋ Add task</button>
       </div>
       <div id="lists" class="stack"></div>
       <p id="status" role="status" aria-live="polite"></p>
-      <footer>Saved in this browser · Drag the grips to reorder tasks<br>Keyboard: focus a grip and use ↑ / ↓ · Export JSON for a backup</footer>
     </main>
   </div>
+
+  <dialog id="help-dialog" aria-labelledby="help-title">
+    <div class="modal-form">
+      <div class="modal-header">
+        <h2 id="help-title">Help</h2>
+        <p>A few tips for managing your lists.</p>
+      </div>
+      <div class="modal-body help-content">
+        <section>
+          <h3>Reorder tasks</h3>
+          <p>Drag a task’s grip to move it within its list. With a keyboard, focus the grip and press ↑ or ↓. Press Escape to cancel a drag. Clear search before reordering.</p>
+        </section>
+        <section>
+          <h3>Your lists stay in this browser</h3>
+          <p>Lists are saved automatically on this device and browser. They do not sync to other devices. Clearing browser data can remove them.</p>
+        </section>
+        <section>
+          <h3>Keep a backup</h3>
+          <p>Choose Export JSON in the sidebar to download a copy of your lists. Use Import JSON to restore a backup. Import asks for confirmation before replacing your current lists.</p>
+        </section>
+        <section>
+          <h3>Deadline warnings</h3>
+          <p>A yellow triangle means a deadline is within 3 days. A red octagon means today or tomorrow. A red clock and soft red background mean overdue. Completed items have no warnings.</p>
+        </section>
+        <section>
+          <h3>Edit a list or task</h3>
+          <p>Open a list’s ••• menu and choose Edit list to change its name, appearance, or deadline. Choose Edit beside a task to update its text, priority, or due date.</p>
+        </section>
+      </div>
+      <div class="modal-footer">
+        <button class="primary" type="button" data-close="help-dialog">Close</button>
+      </div>
+    </div>
+  </dialog>
 
   <dialog id="list-dialog" aria-labelledby="list-dialog-title">
     <form id="list-form" class="modal-form">

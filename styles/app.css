@@ -50,7 +50,6 @@ p { margin: 0; }
 .toolbar { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 14px; margin: 26px 0; }
 .search-group { display: grid; gap: 6px; flex: 1; max-width: 440px; min-width: 0; }
 .search { background: var(--panel); }
-.search-scope { color: var(--muted); font-size: 12px; }
 .stack { display: grid; gap: 22px; }
 .list-card { padding: 22px; border: 1px solid var(--list-border); border-top: 5px solid var(--list-accent); border-radius: var(--radius); background-color: var(--list-tint); background-image: var(--list-texture); color: var(--text); box-shadow: 0 5px 20px #0B395410; }
 .list-card.is-overdue { background-color: var(--red-bg); border-color: var(--red); border-top-color: var(--red); }
@@ -106,7 +105,9 @@ summary::-webkit-details-marker { display: none; }
 .menu { position: absolute; z-index: 20; right: 0; top: calc(100% + 7px); min-width: 180px; padding: 6px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); box-shadow: var(--shadow); }
 .menu button { width: 100%; text-align: left; border: 0; background: transparent; }
 .menu button:hover { background: var(--soft); }
-footer { text-align: center; color: var(--muted); font-size: 12px; margin: 25px 0; }
+.help-content { display: grid; gap: 20px; }
+.help-content h3 { margin: 0 0 6px; font-size: 14px; }
+.help-content p { color: var(--muted); }
 #status { min-height: 22px; color: var(--muted); font-size: 13px; margin-top: 16px; }
 dialog { width: min(550px, calc(100% - 24px)); max-height: calc(100dvh - 24px); padding: 0; border: 1px solid var(--line); color: var(--text); background: var(--panel); box-shadow: var(--shadow); overflow: hidden; }
 dialog::backdrop { background: #082A3D90; }

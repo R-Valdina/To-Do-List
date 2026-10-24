@@ -126,6 +126,7 @@ $('#dismiss-undo').addEventListener('click', () => {
   $('#new-list').focus();
 });
 $('#new-list').addEventListener('click', () => editors.openList(null, $('#new-list')));
+$('#help').addEventListener('click', () => editors.show($('#help-dialog'), $('#help')));
 $('#top-add-task').addEventListener('click', () => editors.openTask(findList(view.selected), null, $('#top-add-task')));
 $('#search').addEventListener('input', redraw);
 $('#sort-lists').addEventListener('click', () => {
