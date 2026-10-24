@@ -272,6 +272,28 @@ class AppBrowserTests(unittest.TestCase):
         self.page.locator("#list-form button[type=submit]").click()
         expect(self.page.locator("#list-dialog")).not_to_be_visible()
 
+    def test_dark_mode_badge_labels_are_white_on_distinct_colored_backgrounds(self):
+        dates = self.page.evaluate("[-1,0,2].map(offset=>{const d=new Date();d.setDate(d.getDate()+offset);return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')})")
+        self.seed([list_data("dark", "Dark list", [
+            task("high", "High task", due=dates[0], priority="High"),
+            task("medium", "Medium task", due=dates[1], priority="Medium"),
+            task("low", "Low task", due=dates[2], priority="Low")], color="teal", due=dates[2]),
+            list_data("white", "White list", [task("white-high", "White high", priority="High")])])
+        self.page.locator("#theme").click()
+        labels = self.page.locator("#lists .badge, #navigation .sidebar-deadline")
+        for label in labels.all():
+            self.assertEqual(label.evaluate("el=>getComputedStyle(el).color"), "rgb(255, 255, 255)")
+        colors = [self.page.locator(f'.task[data-task-id="{name}"] .priority-{name}').evaluate(
+            "el=>getComputedStyle(el).backgroundColor") for name in ["high", "medium", "low"]]
+        self.assertEqual(len(set(colors)), 3)
+        self.page.locator('.task[data-task-id="high"] [data-action="edit"]').click()
+        for choice in self.page.locator(".priority-option").all():
+            self.assertEqual(choice.evaluate("el=>getComputedStyle(el).color"), "rgb(255, 255, 255)")
+        self.page.locator("#task-dialog").get_by_role("button", name="Cancel").click()
+        self.page.locator("#theme").click()
+        self.assertEqual(self.page.locator('.task[data-task-id="high"] .priority-high').evaluate(
+            "el=>getComputedStyle(el).color"), "rgb(165, 30, 50)")
+
     def test_backup_export_import_confirmation_cancel_and_invalid_file(self):
         self.seed([list_data("a", "Backup", [task("t", "Keep me")])])
         with self.page.expect_download() as info:

@@ -88,6 +88,11 @@ p { margin: 0; }
 .sidebar-deadline.warning { background: var(--yellow-bg); color: var(--yellow); border-color: #B68A20; }
 .sidebar-deadline.urgent, .sidebar-deadline.overdue { background: var(--red-bg); color: var(--red); border-color: var(--red); }
 .sidebar-deadline .deadline-icon, .sidebar-deadline .deadline-icon svg { width: 17px; height: 17px; }
+/* Dark-mode badge labels stay white, including on intentionally white lists. */
+body.dark :is(.badge, .sidebar-deadline, .priority-option) { color: #FFFFFF; background: #12465D; }
+body.dark :is(.priority-high, .deadline-badge.urgent, .deadline-badge.overdue, .sidebar-deadline.urgent, .sidebar-deadline.overdue) { color: #FFFFFF; background: #652D3B; }
+body.dark :is(.priority-medium, .deadline-badge.warning, .sidebar-deadline.warning) { color: #FFFFFF; background: #5C461B; }
+body.dark :is(.priority-low, .badge.complete) { color: #FFFFFF; background: #28543C; }
 progress { display: block; appearance: none; width: 100%; height: 7px; margin: 15px 0 20px; border: 0; border-radius: var(--radius); background: var(--field); overflow: hidden; }
 progress::-webkit-progress-bar { background: var(--field); border-radius: var(--radius); }
 progress::-webkit-progress-value { background: var(--list-progress, var(--accent)); border-radius: var(--radius); }
