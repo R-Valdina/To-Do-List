@@ -5,6 +5,7 @@ import { $, showError, focusTask } from './ui/dom.js';
 import { createEditors } from './ui/editors.js';
 import { createDragController } from './ui/drag.js';
 import { renderApp } from './ui/render.js';
+import { createQuoteCard } from './ui/quote-card.js';
 
 const storage = createStorage();
 const loaded = storage.load();
@@ -222,3 +223,4 @@ updateDate();
 redraw();
 editors.refresh();
 if (loaded.migrated) persist('Your existing lists and tasks were migrated. Original browser data was kept.');
+createQuoteCard($('#quote-card'));

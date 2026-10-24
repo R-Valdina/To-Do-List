@@ -12,6 +12,12 @@ from playwright.sync_api import sync_playwright, expect
 
 ROOT = Path(__file__).resolve().parents[1]
 STORAGE_KEY = "todo-list:state:v1"
+QUOTE_API_PREFIX = "https://api.quotable.io/quotes/random?"
+QUOTE_FIXTURE = [
+    {"content": "A small step still counts.", "author": "Example author"},
+    {"content": "Even your to-do list deserves a snack break.", "author": "Another author"},
+    {"content": "Progress, with a side of coffee.", "author": "Third author"},
+]
 
 
 def task(task_id, text, done=False, due="", priority="Medium"):
@@ -57,6 +63,9 @@ class AppBrowserTests(unittest.TestCase):
         self.context = self.browser.new_context(viewport={"width": 1280, "height": 900},
                                                 timezone_id="America/New_York")
         self.page = self.context.new_page()
+        self.page.clock.install()
+        self.page.route("https://api.quotable.io/**", lambda route: route.fulfill(
+            status=200, content_type="application/json", body=json.dumps(QUOTE_FIXTURE)))
         self.page.set_default_timeout(5000)
         self.errors = []
         self.requests = []
@@ -69,8 +78,9 @@ class AppBrowserTests(unittest.TestCase):
     def tearDown(self):
         try:
             self.assertEqual(self.errors, [], "JavaScript runtime errors")
-            self.assertTrue(all(url.startswith(self.url) for url in self.requests),
-                            "The app should not request fonts, images or APIs externally")
+            self.assertTrue(all(url.startswith(self.url) or url.startswith(QUOTE_API_PREFIX)
+                                for url in self.requests),
+                            "Only the optional public quote API may be requested externally")
         finally:
             self.context.close()
 
@@ -334,6 +344,48 @@ class AppBrowserTests(unittest.TestCase):
         expect(self.page.locator(".task-title")).to_have_text("Preserved")
         expect(self.page.locator("body")).to_have_class("dark")
         self.assertEqual(self.saved()["lists"][0]["appearance"]["color"], "white")
+
+    def test_quotes_rotate_pause_resume_and_cache_without_changing_task_data(self):
+        card = self.page.locator("#quote-card")
+        expect(card.locator("[data-quote-credit]")).to_be_visible()
+        first = card.locator("[data-quote-text]").inner_text()
+        calls = len([url for url in self.requests if url.startswith(QUOTE_API_PREFIX)])
+        self.page.clock.fast_forward(300001)
+        expect(card.locator("[data-quote-text]")).not_to_have_text(first)
+        card.locator("[data-quote-pause]").click()
+        paused = card.locator("[data-quote-text]").inner_text()
+        self.page.locator("#search").focus()
+        self.page.clock.fast_forward(600001)
+        expect(card.locator("[data-quote-text]")).to_have_text(paused)
+        card.locator("[data-quote-next]").click()
+        expect(card.locator("[data-quote-text]")).not_to_have_text(paused)
+        current = card.locator("[data-quote-text]").inner_text()
+        card.locator("[data-quote-pause]").click()
+        self.page.locator("#search").focus()
+        self.page.clock.fast_forward(300001)
+        expect(card.locator("[data-quote-text]")).not_to_have_text(current)
+        self.assertIsNone(self.saved())
+        self.page.reload()
+        expect(card.locator("[data-quote-credit]")).to_be_visible()
+        self.assertEqual(len([url for url in self.requests if url.startswith(QUOTE_API_PREFIX)]), calls)
+
+    def test_quote_api_failure_keeps_sidebar_functional_and_quote_text_is_safe(self):
+        self.page.evaluate("localStorage.removeItem('todo-list:quotes:v1')")
+        self.page.unroute("https://api.quotable.io/**")
+        self.page.route("https://api.quotable.io/**", lambda route: route.fulfill(status=503, body="Unavailable"))
+        self.page.reload()
+        expect(self.page.locator("[data-quote-author]")).to_have_text("— To-Do List")
+        expect(self.page.locator("[data-quote-credit]")).not_to_be_visible()
+        self.create_list("Works offline")
+        self.add_task("Still saved")
+        self.assertEqual(self.saved()["lists"][0]["tasks"][0]["text"], "Still saved")
+        self.page.unroute("https://api.quotable.io/**")
+        self.page.route("https://api.quotable.io/**", lambda route: route.fulfill(
+            status=200, content_type="application/json", body=json.dumps([
+                {"content": '<img src=x onerror="alert(1)">', "author": "<b>Author</b>"}])))
+        self.page.reload()
+        expect(self.page.locator("[data-quote-text]")).to_have_text('<img src=x onerror="alert(1)">')
+        self.assertEqual(self.page.locator("#quote-card img, #quote-card b").count(), 0)
 
 
 if __name__ == "__main__":

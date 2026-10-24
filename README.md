@@ -31,7 +31,8 @@ Open the app on port 8000 in your browser. Serve the repository root over HTTP: 
 - Individual list appearance is repeated in the sidebar. White lists keep white borders, neutral gray text/progress, and white backgrounds in either app theme. Explicit overdue warnings take precedence over a list's background color.
 - JSON export/import, automatic legacy migration, and browser-storage error recovery.
 - Sidebar Help dialog with reordering, storage, backup, editing, and deadline guidance.
-- No external fonts, images, trackers, or network services are needed by the app. Palette colors inspired by the supplied images are approximations rather than official paint values.
+- Sidebar motivational/humorous quotes, rotating every five minutes with Next and Pause/Resume controls. Hidden tabs stop automatic rotation.
+- No external fonts, images, or trackers. The optional quote card contacts Quotable; lists and tasks work without it. Palette colors inspired by the supplied images are approximations rather than official paint values.
 
 ## Where your data lives
 
@@ -50,6 +51,14 @@ This is browser-managed storage on your device—not a standalone JSON/YAML file
 When the new storage key is absent, the app migrates `todo-lists-mockup-v3` first, or the original repository's `todos` key. Mockup list order, task completion, priorities, dates, and supported themes are preserved. Original Personal and Business tasks become Personal and Work lists. Legacy keys remain untouched. Existing usernames are also left untouched in their old key; the new design does not display a name field.
 
 Migration only finds data available on the **same browser origin**. A mockup saved in an HTML playground or on a different host/port is not accessible to this app; export/import is the bridge. Invalid legacy entries are reported and retained rather than silently discarded.
+
+### Optional sidebar quotes
+
+The card uses [Quotable](https://github.com/lukePeavey/quotable), a free, open-source quote API whose project declares the MIT license. Its documented request is `https://api.quotable.io/quotes/random?tags=motivational%7Cinspirational%7Chumorous&maxLength=180&limit=20`. Quotes retain author attribution and a source link. No API key is needed.
+
+The browser fetches a batch once and caches validated quotes for 24 hours under `todo-list:quotes:v1`. Automatic rotation runs every five minutes while the tab is visible and the user is not interacting with the card. Next changes the quote immediately; Pause stops automatic rotation until resumed or the page is reloaded. Automatic changes are not announced to screen readers; manual actions are. The app supplies original lighthearted encouragement if the API is blocked, times out, or returns invalid data. There are no repeated background fetches during that page session.
+
+Only the public quote request goes to `api.quotable.io`: no task text, browser-storage contents, cookies, or referrer are included. As with any remote request, the provider receives normal connection metadata such as your IP address. A restricted hosting environment must allow that hostname. During implementation the cloud proxy blocked live API requests; the documented contract was verified from the upstream project and success/failure behavior was tested with controlled API responses. Live service availability is not guaranteed, and the offline quotes keep the card usable.
 
 ### Backup format
 
@@ -90,6 +99,7 @@ src/
   app.js                   App state, actions, and backup orchestration
   model.js                 Schema validation and list/task operations
   storage.js               Persistence, legacy migration, backup decoding
+  quotes.js                Quote API client, validation, cache, offline copy
   dates.js                 Local date validation and deadline calculations
   themes.js                List colors, textures, and appearance application
   ui/
@@ -98,6 +108,7 @@ src/
     editors.js             List/task draft forms and dialogs
     calendar.js            Reusable themed date picker
     drag.js                Pointer and keyboard task reordering
+    quote-card.js          Quote rotation, pause/resume, attribution
 tests/
   *.test.js                Unit tests using Node's built-in runner
   test_app_browser.py      Playwright end-to-end browser automation
@@ -129,7 +140,7 @@ On Linux, Playwright may require system browser dependencies (`python -m playwri
 
 The browser suite starts its own server on an available loopback port and creates a fresh browser context for each test. It does not touch your normal browser data. It uses a system `chromium` executable when available, or Playwright's installed Chromium. Set `CHROMIUM_PATH` to select another Chromium executable.
 
-Tests cover validation, schema errors, migrations, storage failures, calendar-day/DST boundaries, per-list progress, task order integrity, list/task CRUD, scoped search, sorting, custom calendars, mobile dialogs, literal task text, white-list styling, warnings, mouse/touch/keyboard reordering, reload persistence, actual JSON downloads, import cancellation, and recovery from corrupt storage. Browser tests also fail on uncaught JavaScript errors or external application requests.
+Tests cover validation, schema errors, migrations, storage failures, calendar-day/DST boundaries, per-list progress, task order integrity, list/task CRUD, scoped search, sorting, custom calendars, mobile dialogs, literal task text, white-list styling, warnings, mouse/touch/keyboard reordering, reload persistence, actual JSON downloads, import cancellation, and recovery from corrupt storage. Quote tests cover response validation, caching, timeouts, five-minute rotation, pause/resume, offline fallback, attribution, and safe rendering. Browser tests stub the quote service and fail on uncaught JavaScript errors or unexpected external requests; CI does not depend on a live public API.
 
 GitHub Actions runs the unit suite and Chromium automation on pushes and pull requests. CI dependencies are test-only; deploying the application requires only serving the repository's static application files.
 

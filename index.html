@@ -29,6 +29,22 @@
         <input id="import-file" type="file" accept=".json,application/json" hidden>
         <p>Stored in this browser.<br>Export a backup to keep a separate copy.</p>
       </section>
+      <section id="quote-card" class="quote-card" aria-labelledby="quote-heading">
+        <div class="quote-heading">
+          <h2 id="quote-heading">A little encouragement</h2>
+          <span aria-hidden="true">❝</span>
+        </div>
+        <figure>
+          <blockquote><p data-quote-text></p></blockquote>
+          <figcaption data-quote-author></figcaption>
+        </figure>
+        <div class="quote-controls">
+          <button type="button" data-quote-next aria-label="Show another quote">Next quote</button>
+          <button type="button" data-quote-pause aria-label="Pause quote rotation" aria-pressed="false">Pause</button>
+        </div>
+        <a data-quote-credit href="https://github.com/lukePeavey/quotable" target="_blank" rel="noopener noreferrer" hidden>Quotes via Quotable ↗</a>
+        <span class="sr-only" data-quote-status role="status"></span>
+      </section>
     </aside>
     <main id="main" tabindex="-1">
       <header>
@@ -80,6 +96,10 @@
         <section>
           <h3>Edit a list or task</h3>
           <p>Open a list’s ••• menu and choose Edit list to change its name, appearance, or deadline. Choose Edit beside a task to update its text, priority, or due date.</p>
+        </section>
+        <section>
+          <h3>Sidebar quotes</h3>
+          <p>Quotes change every five minutes while this tab is visible. Choose Next quote for another, or Pause to stop rotation. Quotable supplies motivational and humorous quotes when available; original app quotes work offline. No task data is sent to the quote service.</p>
         </section>
       </div>
       <div class="modal-footer">

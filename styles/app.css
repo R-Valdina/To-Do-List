@@ -40,6 +40,18 @@ nav button.list-link.sidebar-overdue { background-color: var(--red-bg); border-c
 .backup-tools p { width: 100%; }
 .backup-tools p:last-child { color: #B5D1DD; font-size: 12px; }
 .backup-tools button { font-size: 12px; }
+.quote-card { margin-top: 28px; padding: 16px; border: 1px solid #326078; border-radius: var(--radius); background: #12465D; color: #F4F9FF; }
+.quote-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.quote-heading h2 { font-size: 12px; color: #B7E4C7; font-weight: 650; }
+.quote-heading > span { color: #00B2CA; font-size: 26px; line-height: 1; }
+.quote-card figure, .quote-card blockquote { margin: 0; }
+.quote-card blockquote { margin-top: 14px; font-size: 14px; line-height: 1.65; overflow-wrap: anywhere; }
+.quote-card figcaption { margin-top: 10px; font-size: 12px; color: #B5D1DD; }
+.quote-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.quote-controls button { padding: 6px 9px; font-size: 11px; background: #0B3954; color: #F4F9FF; border-color: #326078; }
+.quote-controls button:hover { background: #087E8B; }
+.quote-card a { display: inline-block; margin-top: 12px; font-size: 11px; color: #B7E4C7; }
+.quote-card a:focus-visible { outline: 2px solid #00B2CA; outline-offset: 3px; }
 main { width: 100%; max-width: 1120px; margin: 0 auto; padding: 38px; align-self: start; }
 header { display: grid; gap: 16px; }
 .header-title { min-width: 0; text-align: center; }
