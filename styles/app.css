@@ -42,6 +42,9 @@ nav button.list-link.sidebar-overdue { background-color: var(--red-bg); border-c
 .backup-tools button { font-size: 12px; }
 main { width: 100%; max-width: 1120px; margin: 0 auto; padding: 38px; align-self: start; }
 header { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.header-actions { display: flex; align-items: center; justify-content: flex-end; gap: 12px; min-width: 0; }
+.header-actions #theme { flex-shrink: 0; }
+.header-actions .date { text-align: right; }
 h1 { margin: 4px 0; font-size: 32px; letter-spacing: -1px; overflow-wrap: anywhere; }
 h2 { margin: 0; font-size: 19px; overflow-wrap: anywhere; }
 p { margin: 0; }
@@ -169,6 +172,8 @@ label input { font-size: 14px; color: var(--text); }
   .new-list { width: auto; }
   .backup-tools { margin-top: 16px; }
   main { padding: 24px 15px; }
+  header { flex-wrap: wrap; }
+  .header-actions { width: 100%; }
   h1 { font-size: 27px; }
   .search-group { max-width: none; flex-basis: 100%; }
   .list-card { padding: 16px; }
