@@ -1,8 +1,6 @@
-<div align="center">
+# To-Do List
 
-# ✓ To-Do List
-
-**A clear place for every part of your day.**
+A clear place for every part of your day.
 
 Organize work, personal plans, and everything in between—with themed lists, useful deadlines, and progress you can actually see.
 
@@ -12,71 +10,69 @@ Organize work, personal plans, and everything in between—with themed lists, us
 
 [Features](#features) · [Screenshots](#screenshots) · [Get started](#get-started) · [What changed](#what-changed-and-why) · [Development](docs/DEVELOPMENT.md)
 
-</div>
-
 ![Light-mode overview showing themed lists, progress bars, priorities, deadline warnings, sidebar navigation, backups, and a quote card.](docs/images/overview-light.png)
 
-*A browser app built with HTML, CSS, and JavaScript. No account, application build step, or backend required.*
+A browser app built with HTML, CSS, and JavaScript. No account, application build step, or backend required.
 
 ## Features
 
-### A list for every part of your life
+### Lists and navigation
 
-Create lists such as **Personal**, **Work**, or **Meal prepping**. Give each one its own name, deadline, color, and background. Edit a list anytime through its **••• → Edit list** menu.
+Create lists such as Personal, Work, or Meal prepping. Give each one its own name, deadline, color, and background. Edit a list anytime through its ••• → Edit list menu.
 
-- **All lists** brings your lists together in one workspace.
-- The sidebar sorts **A–Z or Z–A** and repeats each list's theme for easy recognition.
-- Search clearly indicates whether it covers **all lists** or **the selected list**.
+- All lists brings your lists together in one workspace.
+- The sidebar sorts A–Z or Z–A and repeats each list's theme for easy recognition.
+- Search clearly indicates whether it covers all lists or the selected list.
 
-### Tasks that are easy to manage
+### Task management
 
 Add tasks, edit their descriptions, set priorities and due dates, and mark them complete.
 
-- **Drag grips** reorder tasks within a list using a mouse or touch.
-- **Keyboard reordering:** focus a grip and use **↑ / ↓**; **Escape** cancels a drag.
-- **Undo** restores the most recently deleted task until dismissed or replaced by another deletion.
-- Each list has its own progress bar, with a count and percentage underneath: **1 of 4 · 25% complete**. Progress reflects the whole list, even when search hides some tasks.
+- Drag grips reorder tasks within a list using a mouse or touch.
+- Keyboard reordering: focus a grip and use ↑ / ↓; Escape cancels a drag.
+- Undo restores the most recently deleted task until dismissed or replaced by another deletion.
+- Each list has its own progress bar, with a count and percentage underneath: 1 of 4 · 25% complete. Progress reflects the whole list, even when search hides some tasks.
 
-### Deadlines you can recognize at a glance
+### Deadlines and priorities
 
-Lists and individual tasks have separate optional due dates. Warnings use **text and distinct shapes**, as well as color.
+Lists and individual tasks have separate optional due dates. Warnings use text and distinct shapes, as well as color.
 
 | Indicator | Meaning |
 | --- | --- |
-| Yellow triangle · **Due soon** | Due in 2–3 days |
-| Red octagon · **Urgent** | Due today or tomorrow |
-| Red clock · **Overdue** | Past its due date; the list or task also gets a soft red background |
-| **Completed** | Deadline warnings are suppressed once the item is complete |
+| Yellow triangle · Due soon | Due in 2–3 days |
+| Red octagon · Urgent | Due today or tomorrow |
+| Red clock · Overdue | Past its due date; the list or task also gets a soft red background |
+| Completed | Deadline warnings are suppressed once the item is complete |
 
-Priorities remain easy to distinguish: **red High**, **yellow Medium**, and **green Low**. Badge labels turn white in dark mode while their backgrounds retain those meanings.
+Priorities remain easy to distinguish: red High, yellow Medium, and green Low. Badge labels turn white in dark mode while their backgrounds retain those meanings.
 
-### Make each list feel like yours
+### Appearance
 
-The app uses a **navy, teal, cyan, mint, and ice-white** theme, with light and dark modes.
+The app uses a navy, teal, cyan, mint, and ice-white theme, with light and dark modes.
 
-- **24 list colors:** coastal shades, neutral classics, and 12 earth/autumn tones including Terracotta, Rust, Pumpkin, Golden Ochre, Moss, Cocoa, and Autumn Plum.
-- **10 background styles:** Plain, Dots, Grid, Stripes, Cross dots, Gingham, Chevron, Triangles, Notebook, and Linen.
+- 24 list colors: coastal shades, neutral classics, and 12 earth/autumn tones including Terracotta, Rust, Pumpkin, Golden Ochre, Moss, Cocoa, and Autumn Plum.
+- 10 background styles: Plain, Dots, Grid, Stripes, Cross dots, Gingham, Chevron, Triangles, Notebook, and Linen.
 - Color and pattern previews match the final list card and sidebar tile.
-- **White stays white**, with white borders and neutral gray text/progress—even when the app is in dark mode. Overdue warnings still take precedence.
+- White stays white, with white borders and neutral gray text/progress—even when the app is in dark mode. Overdue warnings still take precedence.
 - Patterns are included locally; they need no image host or CDN.
 
-### A little encouragement, without getting in the way
+### Quotes and help
 
 The sidebar quote card mixes motivational and humorous quotes from [Quotable](https://github.com/lukePeavey/quotable), with original app quotes when the service is unavailable.
 
-Quotes rotate every **five minutes** while the tab is visible. Choose **Next quote** for another, or **Pause** to stop rotation. The app also includes a sidebar **Help** dialog for shortcuts, backups, editing, and warning explanations.
+Quotes rotate every five minutes while the tab is visible. Choose Next quote for another, or Pause to stop rotation. The app also includes a sidebar Help dialog for shortcuts, backups, editing, and warning explanations.
 
-### Your data stays with you
+### Local storage and backups
 
-Lists save automatically as **JSON in your browser's local storage**. **Export JSON** downloads a backup; **Import JSON** validates a backup and asks before replacing your current lists.
+Lists save automatically as JSON in your browser's local storage. Export JSON downloads a backup; Import JSON validates a backup and asks before replacing your current lists.
 
-There are **no accounts, cross-device sync, or automatic server backups**. Use the same browser profile and site address to access your lists, and export backups before clearing browser data. This is browser-managed storage, not an automatically maintained JSON/YAML file in a PC folder.
+There are no accounts, cross-device sync, or automatic server backups. Use the same browser profile and site address to access your lists, and export backups before clearing browser data. This is browser-managed storage, not an automatically maintained JSON/YAML file in a PC folder.
 
 See [data, backups, and privacy](docs/DATA.md) for migration, recovery, the backup format, and details of the optional quote request.
 
 ## Screenshots
 
-These are captures of the **running app**, using disposable example lists and a fixed demo date. They are not design renderings.
+These are captures of the running app, using disposable example lists and a fixed demo date. They are not design renderings.
 
 ### Dark mode
 
@@ -96,7 +92,7 @@ These are captures of the **running app**, using disposable example lists and a 
 </table>
 
 <details>
-<summary><strong>See the mobile workspace</strong></summary>
+<summary>See the mobile workspace</summary>
 
 The layout adapts to narrow screens. Dialog content scrolls while Save and Cancel remain available. On mobile, sidebar navigation appears above the workspace.
 
@@ -106,7 +102,7 @@ The layout adapts to narrow screens. Dialog content scrolls while Save and Cance
 
 ## Get started
 
-**You need Python 3 and a modern browser.** Node.js is optional for running the app and required for the unit-test commands.
+You need Python 3 and a modern browser. Node.js is optional for running the app and required for the unit-test commands.
 
 1. Clone the repository and enter its folder:
 
@@ -127,7 +123,7 @@ The layout adapts to narrow screens. Dialog content scrolls while Save and Cance
    python3 -m http.server 8000 --bind 127.0.0.1
    ```
 
-4. Open `http://localhost:8000` in your browser and choose **Create list**.
+4. Open `http://localhost:8000` in your browser and choose Create list.
 
 If your machine uses `python` or `py` instead of `python3`, substitute that command. If Node.js is available, `npm run dev` starts the same server. No `npm install` is needed to run the app or its unit tests.
 
@@ -152,13 +148,13 @@ The project began as a tutorial-inspired JavaScript to-do list with Personal/Bus
 | Task text was interpolated into HTML | User text is assigned through DOM text/value properties | Preserves quotes and literal text without turning it into HTML |
 | No automated regression suite | Unit tests and real-browser automation in GitHub Actions | Checks that editing, persistence, reordering, themes, and recovery keep working |
 
-**The language is still JavaScript.** The app uses native ES modules, with no framework, bundler, or production dependency installation. A backend or native desktop shell has not been added.
+The language is still JavaScript. The app uses native ES modules, with no framework, bundler, or production dependency installation. A backend or native desktop shell has not been added.
 
-Existing data from the original app and the latest standalone mockup migrates when available on the **same browser origin**. Legacy storage keys are retained. See [migration details](docs/DATA.md#existing-data).
+Existing data from the original app and the latest standalone mockup migrates when available on the same browser origin. Legacy storage keys are retained. See [migration details](docs/DATA.md#existing-data).
 
 ## Development and testing
 
-Run the unit suite with **Node.js 20+**:
+Run the unit suite with Node.js 20+:
 
 ```sh
 npm test
