@@ -1,136 +1,170 @@
-# To-Do List
+<div align="center">
 
-A local-first list and task manager built with HTML, CSS, and native JavaScript modules. The app uses the approved navy, teal, cyan, mint, and ice-white palette. Individual lists can use their own colors and textures.
+# ✓ To-Do List
 
-## Run locally
+**A clear place for every part of your day.**
 
-Requirements: **Python 3** for the static server. **Node.js 20+** is needed for the optional npm commands and unit tests.
+Organize work, personal plans, and everything in between—with themed lists, useful deadlines, and progress you can actually see.
 
-```sh
-npm run dev
-```
+[![Tests](https://github.com/R-Valdina/To-Do-List/actions/workflows/test.yml/badge.svg?branch=codex%2Fmodernize-todo-app)](https://github.com/R-Valdina/To-Do-List/actions/workflows/test.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-087E8B.svg)](LICENSE)
+[![Built with JavaScript](https://img.shields.io/badge/Built_with-JavaScript-0B3954.svg)](src/)
 
-Or, without Node.js:
+[Features](#features) · [Screenshots](#screenshots) · [Get started](#get-started) · [What changed](#what-changed-and-why) · [Development](docs/DEVELOPMENT.md)
 
-```sh
-python3 -m http.server 8000 --bind 127.0.0.1
-```
+</div>
 
-Open the app on port 8000 in your browser. Serve the repository root over HTTP: opening `index.html` directly with `file://` will not reliably load JavaScript modules. No application dependency installation, build step, API keys, database, or backend is required. Use the same host and port to retain access to that browser's saved data.
+![Light-mode overview showing themed lists, progress bars, priorities, deadline warnings, sidebar navigation, backups, and a quote card.](docs/images/overview-light.png)
+
+*A browser app built with HTML, CSS, and JavaScript. No account, application build step, or backend required.*
 
 ## Features
 
-- Create and edit lists with a name, optional deadline, color, and texture.
-- Per-list progress with a visible bar and a count/percentage beneath it (for example, `1 of 4 · 25% complete`); All lists view; scoped search; A–Z/Z–A list sorting. Percentages round to the nearest whole number and always reflect the full list, even during search.
-- Add and edit tasks with priorities and optional task deadlines.
-- Red High, yellow Medium, and green Low priorities.
-- Mouse/touch drag grips and keyboard reordering. Focus a grip and press Up/Down; Escape cancels dragging. Clear search to reorder the complete list.
-- Complete tasks and undo the most recent deletion until it is dismissed or another task is deleted.
-- Custom themed calendars with arrow-key navigation and responsive scrollable dialogs.
-- Deadline warnings use shapes and text as well as color: yellow triangle within 3 days, red octagon today/tomorrow, and red clock with a soft red background after the due date. Completed tasks/lists suppress warnings. Empty lists remain incomplete.
-- Individual list appearance is repeated in the sidebar. White lists keep white borders, neutral gray text/progress, and white backgrounds in either app theme. Explicit overdue warnings take precedence over a list's background color.
-- 24 list colors, grouped into Coastal & classics and Earth & autumn. The autumn palette adds Sandstone, Clay, Terracotta, Rust, Pumpkin, Golden Ochre, Olive, Moss, Evergreen, Cocoa, Burgundy, and Autumn Plum.
-- 10 local background styles: Plain, Dots, Grid, Stripes, Cross dots, Gingham, Chevron, Triangles, Notebook, and Linen. Pattern previews use the selected color and the same repeat size/offsets as sidebar tiles and list cards. Task rows remain on solid surfaces for readability.
-- JSON export/import, automatic legacy migration, and browser-storage error recovery.
-- Sidebar Help dialog with reordering, storage, backup, editing, and deadline guidance.
-- Sidebar motivational/humorous quotes, rotating every five minutes with Next and Pause/Resume controls. Hidden tabs stop automatic rotation.
-- No external fonts, images, or trackers. The optional quote card contacts Quotable; lists and tasks work without it. Palette colors inspired by the supplied images are approximations rather than official paint values.
+### A list for every part of your life
 
-## Where your data lives
+Create lists such as **Personal**, **Work**, or **Meal prepping**. Give each one its own name, deadline, color, and background. Edit a list anytime through its **••• → Edit list** menu.
 
-Lists, task order, deadlines, appearance, app theme, and sidebar sorting are serialized as **versioned JSON in `localStorage`**, under `todo-list:state:v1`.
+- **All lists** brings your lists together in one workspace.
+- The sidebar sorts **A–Z or Z–A** and repeats each list's theme for easy recognition.
+- Search clearly indicates whether it covers **all lists** or **the selected list**.
 
-This is browser-managed storage on your device—not a standalone JSON/YAML file that the application automatically writes to your Documents folder. Browser security prevents a normal static webpage from silently writing arbitrary PC files. There is no automatic sync, server backup, encryption layer, account, or collaboration service. Treat a browser profile as a single-writer workspace: simultaneous edits in multiple tabs use the last saved state.
+### Tasks that are easy to manage
 
-- **Export JSON** downloads a portable backup file wherever your browser saves downloads.
-- **Import JSON** validates a backup and asks for confirmation before replacing current lists/settings. Cancel leaves data unchanged. Import also accepts a list array from the latest standalone mockup.
-- Clearing site data, changing browsers/profiles/origins, or using private browsing can make local data unavailable. Export backups regularly. Backup files contain your task text; handle them as personal files.
-- A corrupted or unreadable saved state is not overwritten. A persistent error explains that saving is paused. Export recovers the original stored text when available; importing a valid backup explicitly replaces it. Unsaved edits remain in the current tab when writes fail.
-- Backups support up to 100 lists, 5,000 tasks total, 70-character list names, 250-character task descriptions, and a 2 MB import size.
+Add tasks, edit their descriptions, set priorities and due dates, and mark them complete.
 
-### Existing data
+- **Drag grips** reorder tasks within a list using a mouse or touch.
+- **Keyboard reordering:** focus a grip and use **↑ / ↓**; **Escape** cancels a drag.
+- **Undo** restores the most recently deleted task until dismissed or replaced by another deletion.
+- Each list has its own progress bar, with a count and percentage underneath: **1 of 4 · 25% complete**. Progress reflects the whole list, even when search hides some tasks.
 
-When the new storage key is absent, the app migrates `todo-lists-mockup-v3` first, or the original repository's `todos` key. Mockup list order, task completion, priorities, dates, and supported themes are preserved. Original Personal and Business tasks become Personal and Work lists. Legacy keys remain untouched. Existing usernames are also left untouched in their old key; the new design does not display a name field.
+### Deadlines you can recognize at a glance
 
-Migration only finds data available on the **same browser origin**. A mockup saved in an HTML playground or on a different host/port is not accessible to this app; export/import is the bridge. Invalid legacy entries are reported and retained rather than silently discarded.
+Lists and individual tasks have separate optional due dates. Warnings use **text and distinct shapes**, as well as color.
 
-### Optional sidebar quotes
+| Indicator | Meaning |
+| --- | --- |
+| Yellow triangle · **Due soon** | Due in 2–3 days |
+| Red octagon · **Urgent** | Due today or tomorrow |
+| Red clock · **Overdue** | Past its due date; the list or task also gets a soft red background |
+| **Completed** | Deadline warnings are suppressed once the item is complete |
 
-The card uses [Quotable](https://github.com/lukePeavey/quotable), a free, open-source quote API whose project declares the MIT license. Its documented request is `https://api.quotable.io/quotes/random?tags=motivational%7Cinspirational%7Chumorous&maxLength=180&limit=20`. Quotes retain author attribution and a source link. No API key is needed.
+Priorities remain easy to distinguish: **red High**, **yellow Medium**, and **green Low**. Badge labels turn white in dark mode while their backgrounds retain those meanings.
 
-The browser fetches a batch once and caches validated quotes for 24 hours under `todo-list:quotes:v1`. Automatic rotation runs every five minutes while the tab is visible and the user is not interacting with the card. Next changes the quote immediately; Pause stops automatic rotation until resumed or the page is reloaded. Automatic changes are not announced to screen readers; manual actions are. The app supplies original lighthearted encouragement if the API is blocked, times out, or returns invalid data. There are no repeated background fetches during that page session.
+### Make each list feel like yours
 
-Only the public quote request goes to `api.quotable.io`: no task text, browser-storage contents, cookies, or referrer are included. As with any remote request, the provider receives normal connection metadata such as your IP address. A restricted hosting environment must allow that hostname. During implementation the cloud proxy blocked live API requests; the documented contract was verified from the upstream project and success/failure behavior was tested with controlled API responses. Live service availability is not guaranteed, and the offline quotes keep the card usable.
+The app uses a **navy, teal, cyan, mint, and ice-white** theme, with light and dark modes.
 
-### Backup format
+- **24 list colors:** coastal shades, neutral classics, and 12 earth/autumn tones including Terracotta, Rust, Pumpkin, Golden Ochre, Moss, Cocoa, and Autumn Plum.
+- **10 background styles:** Plain, Dots, Grid, Stripes, Cross dots, Gingham, Chevron, Triangles, Notebook, and Linen.
+- Color and pattern previews match the final list card and sidebar tile.
+- **White stays white**, with white borders and neutral gray text/progress—even when the app is in dark mode. Overdue warnings still take precedence.
+- Patterns are included locally; they need no image host or CDN.
 
-```json
-{
-  "schemaVersion": 1,
-  "lists": [
-    {
-      "id": "list-example",
-      "name": "Work",
-      "due": "2026-11-01",
-      "appearance": { "color": "teal", "texture": "grid" },
-      "tasks": [
-        {
-          "id": "task-example",
-          "text": "Prepare proposal",
-          "priority": "High",
-          "due": "2026-10-30",
-          "done": false
-        }
-      ]
-    }
-  ],
-  "settings": { "theme": "light", "sort": "asc" }
-}
-```
+### A little encouragement, without getting in the way
 
-Dates are local calendar days (`YYYY-MM-DD`), not UTC timestamps. Array order is the saved task order. List names and all IDs must be unique. Unknown appearance choices fall back to White/Plain; unsupported schema versions or invalid task data are rejected.
+The sidebar quote card mixes motivational and humorous quotes from [Quotable](https://github.com/lukePeavey/quotable), with original app quotes when the service is unavailable.
 
-## Project structure
+Quotes rotate every **five minutes** while the tab is visible. Choose **Next quote** for another, or **Pause** to stop rotation. The app also includes a sidebar **Help** dialog for shortcuts, backups, editing, and warning explanations.
 
-```text
-index.html                 Semantic page and form markup
-styles/
-  tokens.css               App palette and neutral white-list overrides
-  app.css                  Layout, components, responsive and focus styles
-src/
-  app.js                   App state, actions, and backup orchestration
-  model.js                 Schema validation and list/task operations
-  storage.js               Persistence, legacy migration, backup decoding
-  quotes.js                Quote API client, validation, cache, offline copy
-  dates.js                 Local date validation and deadline calculations
-  themes.js                List colors, textures, and appearance application
-  patterns.js              Local gradient patterns adapted from pattern.css
-  ui/
-    dom.js                 Safe DOM helpers and warning icons
-    render.js              Navigation, list, and task rendering
-    editors.js             List/task draft forms and dialogs
-    calendar.js            Reusable themed date picker
-    drag.js                Pointer and keyboard task reordering
-    quote-card.js          Quote rotation, pause/resume, attribution
-tests/
-  *.test.js                Unit tests using Node's built-in runner
-  test_app_browser.py      Playwright end-to-end browser automation
-.github/workflows/test.yml Unit and browser test CI
-THIRD_PARTY_NOTICES.md     Attribution and MIT license for adapted patterns
-```
+### Your data stays with you
 
-The app intentionally has no framework or bundler. Modules isolate responsibilities without adding a build pipeline. User-entered text uses DOM text/value properties, never HTML interpolation. Static SVG icon markup is application-owned. The model and storage modules can be tested independently of the DOM, and persistence can be replaced later if a backend or desktop app is introduced.
+Lists save automatically as **JSON in your browser's local storage**. **Export JSON** downloads a backup; **Import JSON** validates a backup and asks before replacing your current lists.
 
-## Tests
+There are **no accounts, cross-device sync, or automatic server backups**. Use the same browser profile and site address to access your lists, and export backups before clearing browser data. This is browser-managed storage, not an automatically maintained JSON/YAML file in a PC folder.
 
-Unit tests require Node.js 20+ and no installed npm packages:
+See [data, backups, and privacy](docs/DATA.md) for migration, recovery, the backup format, and details of the optional quote request.
+
+## Screenshots
+
+These are captures of the **running app**, using disposable example lists and a fixed demo date. They are not design renderings.
+
+### Dark mode
+
+![Dark-mode Work list with white status labels, red urgent warnings, a themed background, and per-list completion percentage.](docs/images/work-dark.png)
+
+### List themes and task editing
+
+<table>
+  <tr>
+    <th>Customize the whole list</th>
+    <th>Edit a task and choose a date</th>
+  </tr>
+  <tr>
+    <td valign="top"><img src="docs/images/list-themes.png" alt="List editor with a name, due date, coastal and autumn color groups, ten pattern choices, and a matching preview." width="460"></td>
+    <td valign="top"><img src="docs/images/task-editor.png" alt="Task editor with colored priority choices and a custom calendar matching the app theme." width="460"></td>
+  </tr>
+</table>
+
+<details>
+<summary><strong>See the mobile workspace</strong></summary>
+
+The layout adapts to narrow screens. Dialog content scrolls while Save and Cancel remain available. On mobile, sidebar navigation appears above the workspace.
+
+<img src="docs/images/mobile-work.png" alt="Mobile Work list with a centered heading, scoped search, task priorities, deadline warnings, and a progress bar." width="300">
+
+</details>
+
+## Get started
+
+**You need Python 3 and a modern browser.** Node.js is optional for running the app and required for the unit-test commands.
+
+1. Clone the repository and enter its folder:
+
+   ```sh
+   git clone https://github.com/R-Valdina/To-Do-List.git
+   cd To-Do-List
+   ```
+
+2. If the modernization branch has not been merged into `main`, switch to it:
+
+   ```sh
+   git switch codex/modernize-todo-app
+   ```
+
+3. Start the local server:
+
+   ```sh
+   python3 -m http.server 8000 --bind 127.0.0.1
+   ```
+
+4. Open `http://localhost:8000` in your browser and choose **Create list**.
+
+If your machine uses `python` or `py` instead of `python3`, substitute that command. If Node.js is available, `npm run dev` starts the same server. No `npm install` is needed to run the app or its unit tests.
+
+> Serve the repository over HTTP. Opening `index.html` directly with `file://` does not reliably load JavaScript modules. Keep the same hostname and port to retain access to that origin's saved lists.
+
+The application can also be served by a static host. This repository does not currently provide a desktop installer or a configured public website deployment.
+
+## What changed and why
+
+The project began as a tutorial-inspired JavaScript to-do list with Personal/Business categories, inline task editing, and browser persistence. The updated app keeps that lightweight foundation and expands it into a list-based workspace.
+
+| Earlier behavior | Current behavior | Why it changed |
+| --- | --- | --- |
+| A task feed with two fixed categories | User-created lists with independent themes, deadlines, and progress | Supports work, personal plans, meals, and other projects without fixed categories |
+| Basic completion checkboxes | Visible progress bars plus completed counts and percentages | Makes progress measurable for each list |
+| Task order followed creation order | Drag handles and keyboard reordering | Lets people decide what should come next |
+| Limited task details | Editable text, priority, and a custom due-date picker | Makes important and time-sensitive work easier to identify |
+| Basic visual styling | Consistent app themes, rounded controls, responsive dialogs, and themed list tiles | Makes the interface easier to scan across screen sizes |
+| Information repeated around the page | Scoped search labels and an on-demand Help dialog | Keeps the workspace focused while retaining useful guidance |
+| Browser storage with no backup workflow | Validated JSON import/export and migration of existing data | Supports recovery and moving lists between browsers |
+| Storage and UI behavior shared one JavaScript file | Separate model, storage, dates, themes, and UI modules | Keeps changes smaller and makes behavior easier to test |
+| Task text was interpolated into HTML | User text is assigned through DOM text/value properties | Preserves quotes and literal text without turning it into HTML |
+| No automated regression suite | Unit tests and real-browser automation in GitHub Actions | Checks that editing, persistence, reordering, themes, and recovery keep working |
+
+**The language is still JavaScript.** The app uses native ES modules, with no framework, bundler, or production dependency installation. A backend or native desktop shell has not been added.
+
+Existing data from the original app and the latest standalone mockup migrates when available on the **same browser origin**. Legacy storage keys are retained. See [migration details](docs/DATA.md#existing-data).
+
+## Development and testing
+
+Run the unit suite with **Node.js 20+**:
 
 ```sh
 npm test
-TZ=America/New_York npm test
 ```
 
-Browser automation uses Python 3.10+ and Playwright. Install test-only dependencies in a virtual environment:
+For Chromium automation, install the test-only dependencies in a virtual environment:
 
 ```sh
 python3 -m venv .venv
@@ -140,14 +174,19 @@ python -m playwright install chromium
 npm run test:browser
 ```
 
-On Linux, Playwright may require system browser dependencies (`python -m playwright install --with-deps chromium`). Windows activation uses `.venv\Scripts\activate` instead.
+On Windows, activate with `.venv\Scripts\activate`. Linux may require `python -m playwright install --with-deps chromium`.
 
-The browser suite starts its own server on an available loopback port and creates a fresh browser context for each test. It does not touch your normal browser data. It uses a system `chromium` executable when available, or Playwright's installed Chromium. Set `CHROMIUM_PATH` to select another Chromium executable.
+Tests cover data validation, migration and recovery, deadlines, list/task editing, mouse/touch/keyboard reordering, progress percentages, responsive dialogs, list appearance, quote rotation, and JSON backups. Browser tests use isolated data and controlled quote responses, so a public API outage does not break CI.
 
-Tests cover validation, schema errors, migrations, storage failures, calendar-day/DST boundaries, per-list progress, task order integrity, list/task CRUD, scoped search, sorting, custom calendars, mobile dialogs, literal task text, white-list styling, warnings, mouse/touch/keyboard reordering, reload persistence, actual JSON downloads, import cancellation, and recovery from corrupt storage. Theme tests check heading contrast against base tints, all autumn color/pattern backup combinations, and matching pattern previews/sidebar cards in both app themes. Quote tests cover response validation, caching, timeouts, five-minute rotation, pause/resume, offline fallback, attribution, and safe rendering. Browser tests stub the quote service and fail on uncaught JavaScript errors or unexpected external requests; CI does not depend on a live public API.
+GitHub Actions runs both suites on pushes and pull requests. See the [development guide](docs/DEVELOPMENT.md) for the module layout, test details, and screenshot capture command:
 
-GitHub Actions runs the unit suite and Chromium automation on pushes and pull requests. CI dependencies are test-only; deploying the application requires only serving the repository's static application files.
+```sh
+npm run docs:screenshots
+```
 
 ## Credits and license
 
-The original app was inspired by [Learn to Build a Todo List App in 2022](https://www.youtube.com/watch?v=6eFwtaZf6zc). Background formulas are adapted from [pattern.css 1.0.0](https://github.com/bansal-io/pattern.css) by bansal-io (MIT); see [third-party notices](THIRD_PARTY_NOTICES.md) for source and license details. No CDN or installed pattern library is needed. This revision retains the repository's [MIT license](LICENSE).
+- The original app was inspired by [Learn to Build a Todo List App in 2022](https://www.youtube.com/watch?v=6eFwtaZf6zc).
+- Background patterns are adapted from [pattern.css](https://github.com/bansal-io/pattern.css) by bansal-io, under MIT. [Attribution and license details](THIRD_PARTY_NOTICES.md).
+- Optional online quotes come from [Quotable](https://github.com/lukePeavey/quotable); author attribution appears in the quote card.
+- The project uses the [MIT license](LICENSE).
