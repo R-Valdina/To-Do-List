@@ -4,7 +4,7 @@ A clear place for every part of your day.
 
 Organize work, personal plans, and everything in between—with themed lists, useful deadlines, and progress you can actually see.
 
-[![Tests](https://github.com/R-Valdina/To-Do-List/actions/workflows/test.yml/badge.svg?branch=codex%2Fmodernize-todo-app)](https://github.com/R-Valdina/To-Do-List/actions/workflows/test.yml)
+[![Tests](https://github.com/R-Valdina/To-Do-List/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/R-Valdina/To-Do-List/actions/workflows/test.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-087E8B.svg)](LICENSE)
 [![Built with JavaScript](https://img.shields.io/badge/Built_with-JavaScript-0B3954.svg)](src/)
 
@@ -111,19 +111,13 @@ You need Python 3 and a modern browser. Node.js is optional for running the app 
    cd To-Do-List
    ```
 
-2. If the modernization branch has not been merged into `main`, switch to it:
-
-   ```sh
-   git switch codex/modernize-todo-app
-   ```
-
-3. Start the local server:
+2. Start the local server:
 
    ```sh
    python3 -m http.server 8000 --bind 127.0.0.1
    ```
 
-4. Open `http://localhost:8000` in your browser and choose Create list.
+3. Open `http://localhost:8000` in your browser and choose Create list.
 
 If your machine uses `python` or `py` instead of `python3`, substitute that command. If Node.js is available, `npm run dev` starts the same server. No `npm install` is needed to run the app or its unit tests.
 
